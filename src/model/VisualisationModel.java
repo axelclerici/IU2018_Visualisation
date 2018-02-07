@@ -22,6 +22,8 @@ import javafx.collections.ObservableList;
 public class VisualisationModel implements Model
 {
     private Internationalization inter;
+    private ImagesLoader imagesLoader;
+    
     protected List<LangObserver> obs;
     private List<Internationalizable> interElements;
     
@@ -30,6 +32,7 @@ public class VisualisationModel implements Model
         this.interElements = new ArrayList<>();
         this.inter = new Internationalization();
         this.obs = new ArrayList<>();
+        this.imagesLoader = new ImagesLoader();
     }
     
     @Override
@@ -103,5 +106,10 @@ public class VisualisationModel implements Model
     public void addInterElement(Internationalizable inter)
     {
         interElements.add(inter);
+    }
+    
+    public void updateDirectoryPath(String directoryPath)
+    {
+        imagesLoader.updateDirectoryPath(directoryPath);
     }
 }

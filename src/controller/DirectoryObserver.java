@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.internationalization;
-import core.Observable;
+package controller;
+
 import core.Observer;
 
 /**
  *
  * @author Poisson Blob
  */
-public interface LangObserver extends Observer
+public interface DirectoryObserver extends Observer
 {
-    public void update(Observable o);
+    
 }

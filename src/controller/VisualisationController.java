@@ -7,6 +7,7 @@ package controller;
 
 import core.Controller;
 import core.Model;
+import java.io.File;
 import java.io.IOException;
 import model.VisualisationModel;
 import java.net.URL;
@@ -23,6 +24,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
+import javafx.stage.Stage;
 import model.internationalization.Internationalizable;
 
 
@@ -39,9 +42,9 @@ public class VisualisationController implements Initializable,Controller
     @FXML  protected Text langMenuLabel;
     private LangMenuController langMenuController;
     
+    /* Le bouton "diaporama" et la sélection du dossier */
     @FXML protected Button diaporamaButton;
     private final String diaporamaButtonBundle = "diaporamaButton";
-    
     @FXML protected TextField folderPath;
     @FXML protected Button changeFolderButton;
     
@@ -106,10 +109,34 @@ public class VisualisationController implements Initializable,Controller
     public void initSubElements()
     {
         initDiaporamaButton();
+        initChangeFolderButton();
         this.galleryController = new GalleryController(this);
         this.manageController = new ManageController(this);
         // Il faut initialiser ce controller en dernier, car il doit connaître tous
         // les éléments existants pour la traduction
         this.langMenuController = new LangMenuController(this);
+    }
+    
+    public void initChangeFolderButton()
+    {
+        changeFolderButton.setOnAction((ActionEvent event) -> 
+        {
+            selectFolder();
+        });
+    }
+    
+    public void selectFolder()
+    {
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        //on récupère ici le stage à partir d'un pane quelconque
+        Stage stage = (Stage) galleryPane.getScene().getWindow();
+        File selectedDirectory = directoryChooser.showDialog(stage);
+        String path;
+        if(selectedDirectory != null) {
+            path = selectedDirectory.getAbsolutePath();
+            folderPath.setText(path);
+            if(getModel() instanceof VisualisationModel)
+                ((VisualisationModel)getModel()).updateDirectoryPath(path);
+        }
     }
 }

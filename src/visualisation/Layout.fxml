@@ -30,7 +30,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <TitledPane animated="false" layoutX="7.0" layoutY="101.0" prefHeight="348.0" prefWidth="595.0" text="Galerie" collapsible="false" fx:id="galleryPane">
+      <TitledPane animated="false" layoutX="7.0" layoutY="101.0" prefHeight="348.0" prefWidth="595.0" text="Galerie" collapsible="false" fx:id="galleryPane" disable="true">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                <children>

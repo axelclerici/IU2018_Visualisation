@@ -21,7 +21,6 @@ public class Visualisation extends Application {
     public void start(Stage stage) throws Exception 
     {
         Parent root = FXMLLoader.load(getClass().getResource("Layout.fxml"));
-        
         Scene scene = new Scene(root);
         stage.setTitle("Visualisateur d'Images");
         stage.setScene(scene);
