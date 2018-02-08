@@ -5,8 +5,7 @@
  */
 package model.internationalization;
 
-import core.Model;
-import core.Observable;
+import model.Observable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -15,6 +14,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.text.Text;
+import model.VisualisationModel;
 
 /**
  *
@@ -41,24 +41,24 @@ public class Internationalizable implements LangObserver
     public void update(Observable o) 
     {
         if (object instanceof Label)
-            ((Label) object).setText(((Model) o).getString(string));
+            ((Label) object).setText(((VisualisationModel) o).getString(string));
         else if (object instanceof CheckBox)
-            ((CheckBox)object).setText(((Model) o).getString(string));
+            ((CheckBox)object).setText(((VisualisationModel) o).getString(string));
         else if (object instanceof Tab)
-            ((Tab)object).setText(((Model) o).getString(string));
+            ((Tab)object).setText(((VisualisationModel) o).getString(string));
         else if (object instanceof Button)
-            ((Button)object).setText(((Model) o).getString(string));
+            ((Button)object).setText(((VisualisationModel) o).getString(string));
         else if (object instanceof TextArea)
-            ((TextArea)object).setPromptText(((Model) o).getString(string));
+            ((TextArea)object).setPromptText(((VisualisationModel) o).getString(string));
         else if (object instanceof Label) {
-            ((Label)object).setText(((Model) o).getString(string));
+            ((Label)object).setText(((VisualisationModel) o).getString(string));
         }
         else if (object instanceof Text)
-            ((Text)object).setText(((Model) o).getString(string));
+            ((Text)object).setText(((VisualisationModel) o).getString(string));
         else if (object instanceof TextField)
-            ((TextField)object).setText(((Model) o).getString(string));
+            ((TextField)object).setText(((VisualisationModel) o).getString(string));
         else if (object instanceof TitledPane)
-            ((TitledPane)object).setText(((Model) o).getString(string));
+            ((TitledPane)object).setText(((VisualisationModel) o).getString(string));
         else
             System.out.println("Cas non traité");
     }

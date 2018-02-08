@@ -5,8 +5,10 @@
  */
 package model;
 
+import controller.Observer;
+import controller.DirectoryObserver;
 import model.internationalization.*;
-import core.*;
+import java.io.File;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,23 +21,32 @@ import javafx.collections.ObservableList;
  *
  * @author Poisson Blob
  */
-public class VisualisationModel implements Model
+public class VisualisationModel implements Observable
 {
     private Internationalization inter;
     private ImagesLoader imagesLoader;
     
+    private PreferencesLoader preferencesLoader;
+    
+    private static final String PREFERENCES = "preferences.txt";
+    private static final String PREFERENCES_PATH = System.getProperty("user.dir")
+            + File.separator + "src" + File.separator + "model" + File.separator
+            + PREFERENCES;
+    
+    
     protected List<LangObserver> obs;
+    protected DirectoryObserver directoryObserver;
     private List<Internationalizable> interElements;
     
     public VisualisationModel() throws IOException
     {
         this.interElements = new ArrayList<>();
-        this.inter = new Internationalization();
         this.obs = new ArrayList<>();
-        this.imagesLoader = new ImagesLoader();
+        this.preferencesLoader = new PreferencesLoader(PREFERENCES_PATH);
+        this.inter = new Internationalization(preferencesLoader);
+        this.imagesLoader = new ImagesLoader(preferencesLoader);
     }
     
-    @Override
     public void updateCurrentLang(String label)
     {
         String[] locale = null;
@@ -52,25 +63,21 @@ public class VisualisationModel implements Model
         notifyAllObservers(obs);
     }
     
-    @Override
     public String getString(String string)
     {
         return inter.getString(string);
     }
     
-    @Override
     public ObservableList<String> getLangChoices()
     {
         return this.inter.getLangChoices();
     }
     
-    @Override
     public String getCurrentLangLabel()
     {
         return this.inter.getLangLabel();
     }
 
-    @Override
     public void notifyAllObservers(List<LangObserver> o) 
     {
         System.out.println("Notify Observers");
@@ -78,31 +85,26 @@ public class VisualisationModel implements Model
             notifyObserver(o.get(i));
     }
 
-    @Override
     public void notifyObserver(Observer o) 
     {
         ((LangObserver)o).update(this);
     }
 
-    @Override
     public void removeObserver(Observer o) 
     {
         obs.remove(o);
     }
 
-    @Override
     public void addObserver(Observer o) 
     {
         obs.add((LangObserver) o);
     } 
     
-    @Override
     public List<Internationalizable> getInterElements()
     {
         return interElements;
     }
     
-    @Override
     public void addInterElement(Internationalizable inter)
     {
         interElements.add(inter);
@@ -111,5 +113,10 @@ public class VisualisationModel implements Model
     public void updateDirectoryPath(String directoryPath)
     {
         imagesLoader.updateDirectoryPath(directoryPath);
+    }
+    
+    public PreferencesLoader getPreferenceLoader()
+    {
+        return this.preferencesLoader;
     }
 }

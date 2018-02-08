@@ -5,8 +5,6 @@
  */
 package controller;
 
-import core.Observer;
-
 /**
  *
  * @author Poisson Blob

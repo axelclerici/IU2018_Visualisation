@@ -1,5 +1,6 @@
-package core;
+package model;
 
+import controller.Observer;
 import java.util.List;
 
 /*

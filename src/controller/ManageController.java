@@ -5,8 +5,6 @@
  */
 package controller;
 
-import core.Controller;
-import core.Model;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -17,9 +15,9 @@ import model.internationalization.Internationalizable;
  *
  * @author Poisson Blob
  */
-public class ManageController implements Controller
+public class ManageController
 {
-    private Controller mainController;
+    private VisualisationController mainController;
     
     private TitledPane managePane;
     private final String managePaneBundle = "managePane";
@@ -50,28 +48,21 @@ public class ManageController implements Controller
         this.title = mainController.title;
         
         registerForInter(new Internationalizable(managePaneBundle, 
-            managePane), getModel());
+            managePane));
         registerForInter(new Internationalizable(fullScreenBundle, 
-            fullScreen), getModel());
+            fullScreen));
         registerForInter(new Internationalizable(cutImageBundle, 
-            cutImage), getModel());
+            cutImage));
         registerForInter(new Internationalizable(updateKeyWordsBundle, 
-            updateKeyWords), getModel());
+            updateKeyWords));
         registerForInter(new Internationalizable(keyWordsBundle, 
-            keyWords), getModel());
+            keyWords));
         registerForInter(new Internationalizable(titleBundle, 
-            title), getModel());
+            title));
     }
 
-    @Override
-    public void registerForInter(Internationalizable inter, Model model) 
+    public void registerForInter(Internationalizable inter) 
     {
-        model.addInterElement(inter);
-    }
-
-    @Override
-    public Model getModel() 
-    {
-        return mainController.getModel();
+        mainController.getModel().addInterElement(inter);
     }
 }

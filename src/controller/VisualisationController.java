@@ -5,8 +5,6 @@
  */
 package controller;
 
-import core.Controller;
-import core.Model;
 import java.io.File;
 import java.io.IOException;
 import model.VisualisationModel;
@@ -33,9 +31,9 @@ import model.internationalization.Internationalizable;
  *
  * @author Poisson Blob
  */
-public class VisualisationController implements Initializable,Controller
+public class VisualisationController implements Initializable,DirectoryObserver
 {
-    protected Model model;
+    protected VisualisationModel model;
     
     /* Les éléments de la vue Internationalization */
     @FXML  protected ChoiceBox langMenu;
@@ -78,13 +76,12 @@ public class VisualisationController implements Initializable,Controller
         initSubElements();
     }
     
-    public Model getModel()
+    public VisualisationModel getModel()
     {
         return this.model;
     }
 
-    @Override
-    public void registerForInter(Internationalizable inter, Model model) 
+    public void registerForInter(Internationalizable inter, VisualisationModel model) 
     {
         model.addInterElement(inter);
     }
@@ -117,6 +114,7 @@ public class VisualisationController implements Initializable,Controller
         this.langMenuController = new LangMenuController(this);
     }
     
+    // Ajoute l'action correspondante au bouton pour choisir un répertoire
     public void initChangeFolderButton()
     {
         changeFolderButton.setOnAction((ActionEvent event) -> 
@@ -125,6 +123,7 @@ public class VisualisationController implements Initializable,Controller
         });
     }
     
+    // Fonction permettant à l'utilisateur de choisir le répertoire
     public void selectFolder()
     {
         DirectoryChooser directoryChooser = new DirectoryChooser();

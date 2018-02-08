@@ -5,21 +5,20 @@
  */
 package controller;
 
-import core.Controller;
-import core.Model;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
+import model.VisualisationModel;
 import model.internationalization.Internationalizable;
 
 /**
  *
  * @author Poisson Blob
  */
-public class GalleryController implements Controller
+public class GalleryController
 {
-    private Controller mainController;
+    private VisualisationModel model;
     
     private TitledPane galleryPane;
     private final String galleryPaneBundle = "galleryPane";
@@ -33,28 +32,20 @@ public class GalleryController implements Controller
     
     public GalleryController(VisualisationController mainController)
     {
-        this.mainController = mainController;
+        this.model = mainController.getModel();
         this.galleryPane = mainController.galleryPane;
         this.searchBar = mainController.searchBar;
         this.searchBarButton = mainController.searchBarButton;
         this.gridPane = mainController.gridPane;
         
         registerForInter(new Internationalizable(galleryPaneBundle, 
-            galleryPane), getModel());
+            galleryPane));
         registerForInter(new Internationalizable(searchBarBundle, 
-            searchBar), getModel());
+            searchBar));
     }
     
-    @Override
-    public void registerForInter(Internationalizable inter, Model model) 
+    public void registerForInter(Internationalizable inter) 
     {
         model.addInterElement(inter);
-    }
-
-    @Override
-    public Model getModel() 
-    {
-        return mainController.getModel();
-    }
-    
+    }   
 }

@@ -6,6 +6,7 @@
 package model;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -120,5 +121,21 @@ public class PreferencesLoader
                 params = new String[]{line[2], line[3]};
         }
         return params;
+    }
+
+    protected String getLastDirectory() 
+    {
+        String temp = "";
+        String temp2 = "B:" + File.separator + "Users" + File.separator + "Blob"
+            + File.separator + "Documents" + File.separator + "cool stuff";
+        String temp3 = "B:" + File.separator + "Users" + File.separator + "Blob"
+            + File.separator + "Documents" + File.separator + "cool stuff" 
+            + File.separator + "missingno";
+        return temp3;
+    }
+    
+    public void updateDirectoryPath(String directoryPath)
+    {
+        System.out.println("Je dois écrire " + directoryPath + " dans le fichier préférences");
     }
 }

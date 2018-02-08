@@ -27,11 +27,6 @@ public class Internationalization
     protected ResourceBundle strings;
     protected PreferencesLoader preferencesLoader;
     
-    private static final String PREFERENCES = "preferences.txt";
-    private static final String PREFERENCES_PATH = System.getProperty("user.dir")
-            + File.separator + "src" + File.separator + "model" + File.separator
-            + PREFERENCES;
-    
     public void update(String language, String country, String langLabel) throws FileNotFoundException, UnsupportedEncodingException, IOException
     {
         this.language = language;
@@ -43,9 +38,9 @@ public class Internationalization
 
     }
     
-    public Internationalization() throws IOException
+    public Internationalization(PreferencesLoader preferencesLoader) throws IOException
     {
-        this.preferencesLoader = new PreferencesLoader(PREFERENCES_PATH);
+        this.preferencesLoader = preferencesLoader;
         loadCurrentLang();
         this.currentLocale = new Locale(language, country);
         this.strings = ResourceBundle.getBundle("model.internationalization.StringsBundle", currentLocale);

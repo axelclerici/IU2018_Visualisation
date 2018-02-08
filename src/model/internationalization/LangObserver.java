@@ -4,8 +4,8 @@
  * and open the template in the editor.
  */
 package model.internationalization;
-import core.Observable;
-import core.Observer;
+import model.Observable;
+import controller.Observer;
 
 /**
  *

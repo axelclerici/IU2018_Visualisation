@@ -6,23 +6,21 @@
 package controller;
 
 import model.internationalization.Internationalizable;
-import core.Controller;
-import core.Model;
-
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Text;
+import model.VisualisationModel;
 
 /**
  *
  * @author Poisson Blob
  */
-public class LangMenuController implements Controller
+public class LangMenuController
 {
-    private Controller mainController;
+    private VisualisationModel model;
     private ChoiceBox langMenu;
     private Text langMenuLabel;
     private final String langMenuLabelBundle = "langMenuLabel";
@@ -30,19 +28,18 @@ public class LangMenuController implements Controller
     
     protected LangMenuController(VisualisationController mainController)
     {     
-        this.mainController = mainController;
+        this.model = mainController.getModel();
         this.langMenuLabel = mainController.langMenuLabel;
         this.langMenu = mainController.langMenu;
-        registerForInter(new Internationalizable(langMenuLabelBundle, langMenuLabel), 
-                getModel());
-        this.interElements = mainController.getModel().getInterElements();
+        registerForInter(new Internationalizable(langMenuLabelBundle, langMenuLabel));
+        this.interElements = model.getInterElements();
        
-        ObservableList<String> langChoices = mainController.getModel().getLangChoices();
+        ObservableList<String> langChoices = model.getLangChoices();
         langMenu.setItems(langChoices);
-        langMenu.getSelectionModel().select(mainController.getModel().getCurrentLangLabel());
+        langMenu.getSelectionModel().select(model.getCurrentLangLabel());
 
         setObservers();
-        updateStrings(mainController.getModel().getCurrentLangLabel());
+        updateStrings(model.getCurrentLangLabel());
         
         addListener();
     }
@@ -50,7 +47,7 @@ public class LangMenuController implements Controller
     private void updateStrings(String langLabel) 
     {
         Runnable command = () -> {
-            mainController.getModel().updateCurrentLang(langLabel);
+            model.updateCurrentLang(langLabel);
         };
         
         if (Platform.isFxApplicationThread()) 
@@ -69,7 +66,7 @@ public class LangMenuController implements Controller
     private void setObservers()
     {
         interElements.forEach((interElement) -> {
-            mainController.getModel().addObserver(interElement);
+            model.addObserver(interElement);
         });
     }
     
@@ -85,15 +82,8 @@ public class LangMenuController implements Controller
         });
     }
 
-    @Override
-    public void registerForInter(Internationalizable inter, Model model) 
+    public void registerForInter(Internationalizable inter) 
     {
         model.addInterElement(inter);
-    }
-
-    @Override
-    public Model getModel() 
-    {
-        return mainController.getModel();
     }
 }
