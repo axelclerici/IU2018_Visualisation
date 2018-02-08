@@ -24,21 +24,18 @@ public class LangMenuController
     private ChoiceBox langMenu;
     private Text langMenuLabel;
     private final String langMenuLabelBundle = "langMenuLabel";
-    private List<Internationalizable> interElements;
     
     protected LangMenuController(VisualisationController mainController)
     {     
         this.model = mainController.getModel();
         this.langMenuLabel = mainController.langMenuLabel;
         this.langMenu = mainController.langMenu;
-        registerForInter(new Internationalizable(langMenuLabelBundle, langMenuLabel));
-        this.interElements = model.getInterElements();
+        model.addObserver(new Internationalizable(langMenuLabelBundle, langMenuLabel));
        
         ObservableList<String> langChoices = model.getLangChoices();
         langMenu.setItems(langChoices);
         langMenu.getSelectionModel().select(model.getCurrentLangLabel());
 
-        setObservers();
         updateStrings(model.getCurrentLangLabel());
         
         addListener();
@@ -63,13 +60,6 @@ public class LangMenuController
         }
     }
     
-    private void setObservers()
-    {
-        interElements.forEach((interElement) -> {
-            model.addObserver(interElement);
-        });
-    }
-    
     public void addListener()
     {
         langMenu.getSelectionModel().selectedIndexProperty().addListener(
@@ -80,10 +70,5 @@ public class LangMenuController
                 .toString();
             updateStrings(langLabel);
         });
-    }
-
-    public void registerForInter(Internationalizable inter) 
-    {
-        model.addInterElement(inter);
     }
 }

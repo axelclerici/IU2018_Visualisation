@@ -25,19 +25,19 @@ import javafx.collections.ObservableList;
  */
 public class PreferencesLoader 
 {
-    private String path;
+    private String preferencesPath;
     private ArrayList<String> content;
     
-    public PreferencesLoader(String path) throws FileNotFoundException, IOException
+    public PreferencesLoader(String preferencesPath) throws FileNotFoundException, IOException
     {
-        this.path = path;
+        this.preferencesPath = preferencesPath;
         loadContent();
     }
     
     private void loadContent() throws FileNotFoundException, IOException
     {
         this.content = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader(path));
+        BufferedReader br = new BufferedReader(new FileReader(preferencesPath));
         String line;
         while((line = br.readLine()) != null)
         {
@@ -54,7 +54,7 @@ public class PreferencesLoader
     public String[] getActiveLine()
     {
         String[] line = null;
-        for(int i = 0; i < content.size(); i++)
+        for(int i = 0; i < content.size()-1; i++)
         {
             if(content.get(i).charAt(0) == '1')
                 line = content.get(i).split(" ");
@@ -62,11 +62,11 @@ public class PreferencesLoader
         return line;
     }
     
-    public void setActiveLang(String langLabel)
+    public void setActiveLang(String langLabel) throws IOException
     {
         String[] line = null;
         StringBuilder builder = null;
-        for (int i = 0; i < content.size(); i++)
+        for (int i = 0; i < content.size()-1; i++)
         {
             line = content.get(i).split(" ");
             if(line[0].equals("1") && line[1].equals(langLabel))
@@ -88,11 +88,12 @@ public class PreferencesLoader
                 content.set(i, "" + builder);
             }
         }
+        saveContent();
     }
     
-    public void saveContent() throws IOException
+    private void saveContent() throws IOException
     {
-        Path file = Paths.get(this.path);
+        Path file = Paths.get(this.preferencesPath);
         Files.write(file, this.content, Charset.forName("UTF-8"));
     }
     
@@ -100,11 +101,12 @@ public class PreferencesLoader
     {
         ArrayList<String> choices = new ArrayList<>();
         String [] line = null;
-        for(int i = 0; i < content.size(); i ++)
+        for(int i = 0; i < content.size()-1; i ++)
         {
             line = content.get(i).split(" ");
             choices.add(line[1]);
         }
+        List<String> langLabels = choices.subList(0,3);
         ObservableList<String> availableChoices = 
                 FXCollections.observableArrayList(choices);
         return availableChoices;
@@ -114,7 +116,7 @@ public class PreferencesLoader
     {
         String[] line = null;
         String[] params = null;
-        for(int i = 0; i < content.size(); i ++)
+        for(int i = 0; i < content.size()-1; i ++)
         {
             line = content.get(i).split(" ");
             if(line[1].equals(langLabel))
@@ -125,17 +127,12 @@ public class PreferencesLoader
 
     protected String getLastDirectory() 
     {
-        String temp = "";
-        String temp2 = "B:" + File.separator + "Users" + File.separator + "Blob"
-            + File.separator + "Documents" + File.separator + "cool stuff";
-        String temp3 = "B:" + File.separator + "Users" + File.separator + "Blob"
-            + File.separator + "Documents" + File.separator + "cool stuff" 
-            + File.separator + "missingno";
-        return temp3;
+        return content.get(3);
     }
     
-    public void updateDirectoryPath(String directoryPath)
+    public void updateDirectoryPath(String directoryPath) throws IOException
     {
-        System.out.println("Je dois écrire " + directoryPath + " dans le fichier préférences");
+        content.set(3, directoryPath);
+        saveContent();
     }
 }

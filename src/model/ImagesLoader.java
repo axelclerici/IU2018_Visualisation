@@ -5,9 +5,12 @@
  */
 package model;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,7 +18,7 @@ import java.nio.file.Paths;
  */
 public class ImagesLoader 
 {
-    private String directoryPath;
+    protected String directoryPath;
     private PreferencesLoader preferencesLoader;
     
     public ImagesLoader(PreferencesLoader preferencesLoader)
@@ -25,11 +28,10 @@ public class ImagesLoader
         
     }
     
-    protected void updateDirectoryPath(String directoryPath)
+    protected void updateDirectoryPath(String directoryPath) throws IOException
     {
         this.directoryPath = directoryPath;
         this.preferencesLoader.updateDirectoryPath(directoryPath);
-        System.out.println("Chemin mis à jour, je dois maintenant l'enregistrer dans les préférences");
     }
     
     // Lis l'adresse du répertoire enregistré dans le fichier de préférence
@@ -37,8 +39,8 @@ public class ImagesLoader
     private String getLastDirectory()
     {
         String lastDirectory = preferencesLoader.getLastDirectory();
-        if(lastDirectory.equals("")) { 
-            return null;
+        if(lastDirectory.equals(" ")) { 
+            return " ";
         }
         else 
         {
@@ -47,7 +49,15 @@ public class ImagesLoader
                 return lastDirectory;
             }
             else {
-                return null;
+                try {
+                    // remplace un chemin erroné dans le fichier préférences
+                    // par " ", plus standart. Sert notamment quand le dossier
+                    // du fichier préférences
+                    updateDirectoryPath(" ");
+                } catch (IOException ex) {
+                    Logger.getLogger(ImagesLoader.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return " ";
             }
         }
     }

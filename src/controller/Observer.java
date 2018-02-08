@@ -5,11 +5,13 @@
  */
 package controller;
 
+import model.Observable;
+
 /**
  *
  * @author Poisson Blob
  */
 public interface Observer 
 {
-    
+    public void update(Observable o);
 }

@@ -38,14 +38,9 @@ public class GalleryController
         this.searchBarButton = mainController.searchBarButton;
         this.gridPane = mainController.gridPane;
         
-        registerForInter(new Internationalizable(galleryPaneBundle, 
+        model.addObserver(new Internationalizable(galleryPaneBundle, 
             galleryPane));
-        registerForInter(new Internationalizable(searchBarBundle, 
+        model.addObserver(new Internationalizable(searchBarBundle, 
             searchBar));
-    }
-    
-    public void registerForInter(Internationalizable inter) 
-    {
-        model.addInterElement(inter);
-    }   
+    } 
 }

@@ -13,5 +13,5 @@ import controller.Observer;
  */
 public interface LangObserver extends Observer
 {
-    public void update(Observable o);
+    
 }

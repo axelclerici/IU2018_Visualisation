@@ -12,6 +12,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,6 +25,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import model.Observable;
 import model.internationalization.Internationalizable;
 
 
@@ -44,7 +46,9 @@ public class VisualisationController implements Initializable,DirectoryObserver
     @FXML protected Button diaporamaButton;
     private final String diaporamaButtonBundle = "diaporamaButton";
     @FXML protected TextField folderPath;
+    private final String directoryPathBundle = "directoryPath";
     @FXML protected Button changeFolderButton;
+    private Internationalizable folderPathInter;
     
     /* Les éléments composant la galerie */
     private GalleryController galleryController;
@@ -70,6 +74,10 @@ public class VisualisationController implements Initializable,DirectoryObserver
     {
         try {
             this.model = new VisualisationModel();
+            model.addObserver(this);            
+            this.folderPathInter = new Internationalizable(directoryPathBundle, folderPath);
+            updateDirectoryPath(model.getDirectoryPath());
+
         } catch (IOException ex) {
             Logger.getLogger(VisualisationController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -81,15 +89,10 @@ public class VisualisationController implements Initializable,DirectoryObserver
         return this.model;
     }
 
-    public void registerForInter(Internationalizable inter, VisualisationModel model) 
-    {
-        model.addInterElement(inter);
-    }
-    
     private void initDiaporamaButton()
     {
-        registerForInter(new Internationalizable(diaporamaButtonBundle, 
-            diaporamaButton), model);
+        model.addObserver(new Internationalizable(diaporamaButtonBundle, 
+            diaporamaButton));
         diaporamaButton.setOnAction((ActionEvent event) -> 
         {
             startDiaporama();
@@ -119,12 +122,16 @@ public class VisualisationController implements Initializable,DirectoryObserver
     {
         changeFolderButton.setOnAction((ActionEvent event) -> 
         {
-            selectFolder();
+            try {
+                selectFolder();
+            } catch (IOException ex) {
+                Logger.getLogger(VisualisationController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
     
     // Fonction permettant à l'utilisateur de choisir le répertoire
-    public void selectFolder()
+    private void selectFolder() throws IOException
     {
         DirectoryChooser directoryChooser = new DirectoryChooser();
         //on récupère ici le stage à partir d'un pane quelconque
@@ -133,9 +140,44 @@ public class VisualisationController implements Initializable,DirectoryObserver
         String path;
         if(selectedDirectory != null) {
             path = selectedDirectory.getAbsolutePath();
-            folderPath.setText(path);
-            if(getModel() instanceof VisualisationModel)
-                ((VisualisationModel)getModel()).updateDirectoryPath(path);
+            model.updateDirectoryPath(path);
+        }
+    }
+    
+    private void updateDirectoryPath(String directoryPath) throws IOException
+    {
+               /* Runnable command = () -> {
+            model.updateCurrentLang(langLabel);
+        };
+        
+        if (Platform.isFxApplicationThread()) 
+        {
+        // Nous sommes déjà dans le thread graphique
+         command.run();
+        } 
+        else 
+        {
+        // Nous ne sommes pas dans le thread graphique
+        // on utilise runLater.
+        Platform.runLater(command);
+        }*/
+        if(directoryPath.equals(" ")) {
+            model.addObserver(folderPathInter);
+        }
+        else {
+            model.removeObserver(folderPathInter);
+            folderPath.setText(directoryPath);
+        }
+            
+    }
+
+    @Override
+    public void update(Observable o) 
+    {
+        try {
+            updateDirectoryPath(model.getDirectoryPath());
+        } catch (IOException ex) {
+            Logger.getLogger(VisualisationController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }

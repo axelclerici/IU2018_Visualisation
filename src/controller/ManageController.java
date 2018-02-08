@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import model.VisualisationModel;
 import model.internationalization.Internationalizable;
 
 /**
@@ -17,7 +18,7 @@ import model.internationalization.Internationalizable;
  */
 public class ManageController
 {
-    private VisualisationController mainController;
+    private VisualisationModel model;
     
     private TitledPane managePane;
     private final String managePaneBundle = "managePane";
@@ -39,7 +40,7 @@ public class ManageController
     
     public ManageController(VisualisationController mainController)
     {
-        this.mainController = mainController;
+        this.model = mainController.model;
         this.managePane = mainController.managePane;
         this.fullScreen = mainController.fullScreen;
         this.cutImage = mainController.cutImage;
@@ -47,22 +48,17 @@ public class ManageController
         this.updateKeyWords = mainController.updateKeyWords;
         this.title = mainController.title;
         
-        registerForInter(new Internationalizable(managePaneBundle, 
+        model.addObserver(new Internationalizable(managePaneBundle, 
             managePane));
-        registerForInter(new Internationalizable(fullScreenBundle, 
+        model.addObserver(new Internationalizable(fullScreenBundle, 
             fullScreen));
-        registerForInter(new Internationalizable(cutImageBundle, 
+        model.addObserver(new Internationalizable(cutImageBundle, 
             cutImage));
-        registerForInter(new Internationalizable(updateKeyWordsBundle, 
+        model.addObserver(new Internationalizable(updateKeyWordsBundle, 
             updateKeyWords));
-        registerForInter(new Internationalizable(keyWordsBundle, 
+        model.addObserver(new Internationalizable(keyWordsBundle, 
             keyWords));
-        registerForInter(new Internationalizable(titleBundle, 
+        model.addObserver(new Internationalizable(titleBundle, 
             title));
-    }
-
-    public void registerForInter(Internationalizable inter) 
-    {
-        mainController.getModel().addInterElement(inter);
     }
 }

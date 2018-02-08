@@ -18,6 +18,7 @@ import model.PreferencesLoader;
  *
  * @author Poisson Blob
  */
+// Correspond à la partie "model" du module internationalization
 public class Internationalization 
 {
     protected String langLabel;
@@ -63,7 +64,6 @@ public class Internationalization
     private void writeCurrentLang() throws FileNotFoundException, UnsupportedEncodingException, IOException
     {
         this.preferencesLoader.setActiveLang(langLabel);
-        this.preferencesLoader.saveContent();
     }
     
     public ObservableList<String> getLangChoices()

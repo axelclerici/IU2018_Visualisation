@@ -34,14 +34,12 @@ public class VisualisationModel implements Observable
             + PREFERENCES;
     
     
-    protected List<LangObserver> obs;
+    protected List<Internationalizable> interElements;
     protected DirectoryObserver directoryObserver;
-    private List<Internationalizable> interElements;
     
     public VisualisationModel() throws IOException
     {
         this.interElements = new ArrayList<>();
-        this.obs = new ArrayList<>();
         this.preferencesLoader = new PreferencesLoader(PREFERENCES_PATH);
         this.inter = new Internationalization(preferencesLoader);
         this.imagesLoader = new ImagesLoader(preferencesLoader);
@@ -60,7 +58,7 @@ public class VisualisationModel implements Observable
         } catch (IOException ex) {
             Logger.getLogger(VisualisationModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        notifyAllObservers(obs);
+        notifyAllObservers();
     }
     
     public String getString(String string)
@@ -78,26 +76,38 @@ public class VisualisationModel implements Observable
         return this.inter.getLangLabel();
     }
 
-    public void notifyAllObservers(List<LangObserver> o) 
+    public void notifyAllObservers() 
     {
-        System.out.println("Notify Observers");
-        for(int i = 0; i < o.size(); i ++)
-            notifyObserver(o.get(i));
+        for(int i = 0; i < interElements.size(); i ++)
+            notifyObserver(interElements.get(i));
     }
 
+    @Override
     public void notifyObserver(Observer o) 
     {
-        ((LangObserver)o).update(this);
+        if(o instanceof LangObserver) {
+            ((LangObserver)o).update(this);
+        }
+        else if(o instanceof DirectoryObserver) {
+            ((DirectoryObserver)o).update(this);  
+        }
     }
 
+    @Override
     public void removeObserver(Observer o) 
     {
-        obs.remove(o);
+        interElements.remove(o);
     }
 
+    @Override
     public void addObserver(Observer o) 
     {
-        obs.add((LangObserver) o);
+        if(o instanceof Internationalizable) {
+            interElements.add((Internationalizable) o);
+        }
+        else if(o instanceof DirectoryObserver) {
+            directoryObserver = (DirectoryObserver) o;
+        }
     } 
     
     public List<Internationalizable> getInterElements()
@@ -105,18 +115,19 @@ public class VisualisationModel implements Observable
         return interElements;
     }
     
-    public void addInterElement(Internationalizable inter)
-    {
-        interElements.add(inter);
-    }
-    
-    public void updateDirectoryPath(String directoryPath)
+    public void updateDirectoryPath(String directoryPath) throws IOException
     {
         imagesLoader.updateDirectoryPath(directoryPath);
+        notifyObserver(directoryObserver);
     }
     
-    public PreferencesLoader getPreferenceLoader()
+    public PreferencesLoader getPreferencesLoader()
     {
         return this.preferencesLoader;
+    }
+    
+    public String getDirectoryPath()
+    {
+        return imagesLoader.directoryPath;
     }
 }
