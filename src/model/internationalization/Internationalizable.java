@@ -62,4 +62,9 @@ public class Internationalizable implements LangObserver
         else
             System.out.println("Cas non traité");
     }
+    
+    public Object getObject()
+    {
+        return object;
+    }
 }

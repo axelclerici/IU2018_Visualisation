@@ -9,8 +9,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import model.Consts;
 import model.VisualisationModel;
-import model.internationalization.Internationalizable;
 
 /**
  *
@@ -21,22 +21,11 @@ public class ManageController
     private VisualisationModel model;
     
     private TitledPane managePane;
-    private final String managePaneBundle = "managePane";
-    
     private Button fullScreen;
-    private final String fullScreenBundle = "fullScreen";
-    
     private Button cutImage;
-    private final String cutImageBundle = "cutImage";
-    
     private Button updateKeyWords;
-    private final String updateKeyWordsBundle = "updateKeyWords";
-    
-    private TextArea keyWords;
-    private final String keyWordsBundle = "keyWords";
-        
+    private TextArea keyWords;   
     private TextField title;
-    private final String titleBundle = "title";
     
     public ManageController(VisualisationController mainController)
     {
@@ -48,17 +37,11 @@ public class ManageController
         this.updateKeyWords = mainController.updateKeyWords;
         this.title = mainController.title;
         
-        model.addObserver(new Internationalizable(managePaneBundle, 
-            managePane));
-        model.addObserver(new Internationalizable(fullScreenBundle, 
-            fullScreen));
-        model.addObserver(new Internationalizable(cutImageBundle, 
-            cutImage));
-        model.addObserver(new Internationalizable(updateKeyWordsBundle, 
-            updateKeyWords));
-        model.addObserver(new Internationalizable(keyWordsBundle, 
-            keyWords));
-        model.addObserver(new Internationalizable(titleBundle, 
-            title));
+        model.registerForInter(Consts.MANAGEPANE, managePane);
+        model.registerForInter(Consts.FULLSCREEN, fullScreen);
+        model.registerForInter(Consts.CUTIMAGE, cutImage);
+        model.registerForInter(Consts.UPDATEKEYWORDS, updateKeyWords);
+        model.registerForInter(Consts.KEYWORDS, keyWords);
+        model.registerForInter(Consts.TITLE, title);
     }
 }

@@ -5,13 +5,12 @@
  */
 package controller;
 
-import model.internationalization.Internationalizable;
-import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Text;
+import model.Consts;
 import model.VisualisationModel;
 
 /**
@@ -23,14 +22,13 @@ public class LangMenuController
     private VisualisationModel model;
     private ChoiceBox langMenu;
     private Text langMenuLabel;
-    private final String langMenuLabelBundle = "langMenuLabel";
     
     protected LangMenuController(VisualisationController mainController)
     {     
         this.model = mainController.getModel();
         this.langMenuLabel = mainController.langMenuLabel;
         this.langMenu = mainController.langMenu;
-        model.addObserver(new Internationalizable(langMenuLabelBundle, langMenuLabel));
+        model.registerForInter(Consts.LANGMENULABEL, langMenuLabel);
        
         ObservableList<String> langChoices = model.getLangChoices();
         langMenu.setItems(langChoices);

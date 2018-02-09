@@ -5,7 +5,7 @@
  */
 package model.internationalization;
 import model.Observable;
-import controller.Observer;
+import visualisation.Observer;
 
 /**
  *

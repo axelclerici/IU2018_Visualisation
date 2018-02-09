@@ -18,15 +18,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.Toggle;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
+import model.Consts;
 import model.Observable;
-import model.internationalization.Internationalizable;
 
 
 /**
@@ -44,11 +46,8 @@ public class VisualisationController implements Initializable,DirectoryObserver
     
     /* Le bouton "diaporama" et la sélection du dossier */
     @FXML protected Button diaporamaButton;
-    private final String diaporamaButtonBundle = "diaporamaButton";
     @FXML protected TextField folderPath;
-    private final String directoryPathBundle = "directoryPath";
     @FXML protected Button changeFolderButton;
-    private Internationalizable folderPathInter;
     
     /* Les éléments composant la galerie */
     private GalleryController galleryController;
@@ -75,8 +74,7 @@ public class VisualisationController implements Initializable,DirectoryObserver
         try {
             this.model = new VisualisationModel();
             model.addObserver(this);            
-            this.folderPathInter = new Internationalizable(directoryPathBundle, folderPath);
-            updateDirectoryPath(model.getDirectoryPath());
+
 
         } catch (IOException ex) {
             Logger.getLogger(VisualisationController.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,8 +89,7 @@ public class VisualisationController implements Initializable,DirectoryObserver
 
     private void initDiaporamaButton()
     {
-        model.addObserver(new Internationalizable(diaporamaButtonBundle, 
-            diaporamaButton));
+        model.registerForInter(Consts.DIAPORAMABUTTON, diaporamaButton);
         diaporamaButton.setOnAction((ActionEvent event) -> 
         {
             startDiaporama();
@@ -108,13 +105,20 @@ public class VisualisationController implements Initializable,DirectoryObserver
     
     public void initSubElements()
     {
+        this.galleryController = new GalleryController(this);
+        
+        try {
+            model.updateDirectoryPath(model.getDirectoryPath());
+        } catch (IOException ex) {
+            Logger.getLogger(VisualisationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.manageController = new ManageController(this);
+        // Il faut initialiser ce controller en dernier, car il faut que tous
+        // les éléments existants soient enregistrés pour la traduction
+        this.langMenuController = new LangMenuController(this);
+        
         initDiaporamaButton();
         initChangeFolderButton();
-        this.galleryController = new GalleryController(this);
-        this.manageController = new ManageController(this);
-        // Il faut initialiser ce controller en dernier, car il doit connaître tous
-        // les éléments existants pour la traduction
-        this.langMenuController = new LangMenuController(this);
     }
     
     // Ajoute l'action correspondante au bouton pour choisir un répertoire
@@ -146,8 +150,22 @@ public class VisualisationController implements Initializable,DirectoryObserver
     
     private void updateDirectoryPath(String directoryPath) throws IOException
     {
-               /* Runnable command = () -> {
-            model.updateCurrentLang(langLabel);
+        Runnable command = () -> {
+            if(directoryPath.equals(" ")) {
+                this.model.registerForInter(Consts.DIRECTORYPATH, folderPath);
+            }
+            else {
+                model.unregisterForInter(folderPath);
+                folderPath.setText(directoryPath);
+                if (model.folderContainsImage()) {
+                    galleryPane.setDisable(false);
+                    galleryController.update();
+                }
+                else {
+                    galleryController.clearGallery();
+                    galleryPane.setDisable(true);
+                }
+            }
         };
         
         if (Platform.isFxApplicationThread()) 
@@ -160,15 +178,7 @@ public class VisualisationController implements Initializable,DirectoryObserver
         // Nous ne sommes pas dans le thread graphique
         // on utilise runLater.
         Platform.runLater(command);
-        }*/
-        if(directoryPath.equals(" ")) {
-            model.addObserver(folderPathInter);
-        }
-        else {
-            model.removeObserver(folderPathInter);
-            folderPath.setText(directoryPath);
-        }
-            
+        }        
     }
 
     @Override

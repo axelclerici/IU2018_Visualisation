@@ -5,7 +5,6 @@
  */
 package model.internationalization;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -18,7 +17,6 @@ import model.PreferencesLoader;
  *
  * @author Poisson Blob
  */
-// Correspond à la partie "model" du module internationalization
 public class Internationalization 
 {
     protected String langLabel;

@@ -1,6 +1,6 @@
 package model;
 
-import controller.Observer;
+import visualisation.Observer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

@@ -5,7 +5,7 @@
  */
 package model;
 
-import controller.Observer;
+import visualisation.Observer;
 import controller.DirectoryObserver;
 import model.internationalization.*;
 import java.io.File;
@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
+import javax.activation.MimetypesFileTypeMap;
 
 /**
  *
@@ -78,8 +79,9 @@ public class VisualisationModel implements Observable
 
     public void notifyAllObservers() 
     {
-        for(int i = 0; i < interElements.size(); i ++)
-            notifyObserver(interElements.get(i));
+        interElements.forEach((interElement) -> {
+            notifyObserver(interElement);
+        });
     }
 
     @Override
@@ -129,5 +131,31 @@ public class VisualisationModel implements Observable
     public String getDirectoryPath()
     {
         return imagesLoader.directoryPath;
+    }
+    
+    public boolean folderContainsImage()
+    {
+        return imagesLoader.folderContainsImage();
+    }
+    
+    //todo
+    public ArrayList<ImageModel> getImages()
+    {
+        return imagesLoader.getImages();
+    }
+    
+    public void registerForInter(String string, Object object)
+    {
+        addObserver(new Internationalizable(string, object));
+    }
+    
+    public void unregisterForInter(Object object)
+    {
+        for(Internationalizable interElement : interElements)
+        {
+            if(interElement.getObject().equals(object)) {
+                removeObserver(interElement);
+            }
+        }
     }
 }
