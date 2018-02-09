@@ -23,6 +23,10 @@ public class LangMenuController
     private ChoiceBox langMenu;
     private Text langMenuLabel;
     
+    /**
+     *
+     * @param mainController
+     */
     protected LangMenuController(VisualisationController mainController)
     {     
         this.model = mainController.getModel();
@@ -58,6 +62,9 @@ public class LangMenuController
         }
     }
     
+    /**
+     *
+     */
     public void addListener()
     {
         langMenu.getSelectionModel().selectedIndexProperty().addListener(

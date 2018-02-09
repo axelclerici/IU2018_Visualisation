@@ -1,4 +1,4 @@
-0 Français fr FR
-1 English en US
+1 Français fr FR
+0 English en US
 0 日本の ja JP
-B:\Users\Blob\Documents\cool stuff
+C:\Users\Public\Pictures\Sample Pictures

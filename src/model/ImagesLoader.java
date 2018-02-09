@@ -83,7 +83,6 @@ public class ImagesLoader
                 // prevoir le cas où il faut supprimer des méta data car l'image n'est plus présente
                 //sinon :
                 images.add(new ImageModel(fileEntry, id));
-                System.out.println("je charge : " + fileEntry.getAbsolutePath() + " " + id);
                 id++;
             }
         }

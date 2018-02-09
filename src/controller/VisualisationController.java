@@ -35,36 +35,111 @@ import model.Observable;
  *
  * @author Poisson Blob
  */
-public class VisualisationController implements Initializable,DirectoryObserver
+public class VisualisationController implements Initializable,DirectoryObserver,
+        ActivationObserver
 {
+
+    /**
+     *
+     */
     protected VisualisationModel model;
     
     /* Les éléments de la vue Internationalization */
+
+    /**
+     *
+     */
+
     @FXML  protected ChoiceBox langMenu;
+
+    /**
+     *
+     */
     @FXML  protected Text langMenuLabel;
     private LangMenuController langMenuController;
     
     /* Le bouton "diaporama" et la sélection du dossier */
+
+    /**
+     *
+     */
+
     @FXML protected Button diaporamaButton;
+
+    /**
+     *
+     */
     @FXML protected TextField folderPath;
+
+    /**
+     *
+     */
     @FXML protected Button changeFolderButton;
     
     /* Les éléments composant la galerie */
     private GalleryController galleryController;
+
+    /**
+     *
+     */
     @FXML protected TitledPane galleryPane;
+
+    /**
+     *
+     */
     @FXML protected TextField searchBar;
+
+    /**
+     *
+     */
     @FXML protected Button searchBarButton;
+
+    /**
+     *
+     */
     @FXML protected GridPane gridPane;
     
     /* Les éléments composant la partie gestion */
     private ManageController manageController;
+
+    /**
+     *
+     */
     @FXML protected TitledPane managePane;
+
+    /**
+     *
+     */
     @FXML protected Button rotateLeft;
+
+    /**
+     *
+     */
     @FXML protected Button rotateRight;
+
+    /**
+     *
+     */
     @FXML protected Button fullScreen;
+
+    /**
+     *
+     */
     @FXML protected Button cutImage;
+
+    /**
+     *
+     */
     @FXML protected Button updateKeyWords;
+
+    /**
+     *
+     */
     @FXML protected TextArea keyWords;
+
+    /**
+     *
+     */
     @FXML protected TextField title;
 
     
@@ -82,6 +157,10 @@ public class VisualisationController implements Initializable,DirectoryObserver
         initSubElements();
     }
     
+    /**
+     *
+     * @return
+     */
     public VisualisationModel getModel()
     {
         return this.model;
@@ -103,10 +182,13 @@ public class VisualisationController implements Initializable,DirectoryObserver
                 + "avant la fin du projet");
     }
     
+    /**
+     *
+     */
     public void initSubElements()
     {
         this.galleryController = new GalleryController(this);
-        
+        galleryController.addObserver(this);
         try {
             model.updateDirectoryPath(model.getDirectoryPath());
         } catch (IOException ex) {
@@ -122,6 +204,10 @@ public class VisualisationController implements Initializable,DirectoryObserver
     }
     
     // Ajoute l'action correspondante au bouton pour choisir un répertoire
+
+    /**
+     *
+     */
     public void initChangeFolderButton()
     {
         changeFolderButton.setOnAction((ActionEvent event) -> 
@@ -148,6 +234,12 @@ public class VisualisationController implements Initializable,DirectoryObserver
         }
     }
     
+     /**
+     * Met à jour le chemin indiqué par l'utilisateur. Si le chemin est bon,
+     * et que le dossier contient des images, alors le galleryPane est activé 
+     * et mis à jour.
+     * @param directoryPath
+     */
     private void updateDirectoryPath(String directoryPath) throws IOException
     {
         Runnable command = () -> {
@@ -181,13 +273,25 @@ public class VisualisationController implements Initializable,DirectoryObserver
         }        
     }
 
+    /**
+     *
+     * @param o
+     */
     @Override
     public void update(Observable o) 
     {
-        try {
+        if(o instanceof VisualisationModel)
+        {
+            try {
             updateDirectoryPath(model.getDirectoryPath());
         } catch (IOException ex) {
             Logger.getLogger(VisualisationController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        else if(o instanceof GalleryController)
+        {
+            System.out.println("Ici le mainController, je passe l'image au manageController !");
+            manageController.update(((GalleryController)o).getActiveImageModel());
         }
     }
 }

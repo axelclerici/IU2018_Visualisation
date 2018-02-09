@@ -18,13 +18,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import model.Consts;
 import model.ImageModel;
+import model.Observable;
 import model.VisualisationModel;
+import visualisation.Observer;
 
 /**
  *
  * @author Poisson Blob
  */
-public class GalleryController
+public class GalleryController implements Observable
 {
     private VisualisationModel model;
     private TitledPane galleryPane;
@@ -33,7 +35,14 @@ public class GalleryController
     private GridPane gridPane;
     private ArrayList<ImageView> imageViews;
     private ToggleGroup radioGroup;
+    private ActivationObserver obs;
+    
+    private ImageModel activeImageModel;
 
+    /**
+     *
+     * @param mainController
+     */
     public GalleryController(VisualisationController mainController)
     {
         this.model = mainController.getModel();
@@ -46,6 +55,9 @@ public class GalleryController
         model.registerForInter(Consts.SEARCHBAR, searchBar);
     }
     
+    /**
+     *
+     */
     protected void update()
     {
         Runnable command = () -> 
@@ -65,6 +77,9 @@ public class GalleryController
         }
     }
     
+    /**
+     *
+     */
     protected void clearGallery()
     {
         gridPane.getChildren().clear();
@@ -93,7 +108,7 @@ public class GalleryController
     {
         this.radioGroup = new ToggleGroup();
         radioGroup.selectedToggleProperty().addListener((observable, oldVal, newVal) -> 
-                System.out.println(newVal + " was selected"));
+            setActiveImageModel(newVal));
         int row = 0;
         int col = 0;
         for(ImageView imageView : imageViews)
@@ -111,10 +126,49 @@ public class GalleryController
         }
     }
     
-    public ImageModel getActiveImageModel(Toggle newVal) 
+    private void setActiveImageModel(Toggle newVal) 
     {
         int activeIndex = Integer.parseInt(((RadioButton)newVal).getId());
-        ImageModel activeImageModel = model.getImages().get(activeIndex);
+        activeImageModel = model.getImages().get(activeIndex);
+        notifyObserver(obs);
+    }
+
+    /**
+     *
+     * @param o
+     */
+    @Override
+    public void notifyObserver(Observer o) 
+    {
+        obs.update(this);
+    }
+
+    /**
+     *
+     * @param o
+     */
+    @Override
+    public void removeObserver(Observer o) 
+    {
+        this.obs = null;
+    }
+
+    /**
+     *
+     * @param o
+     */
+    @Override
+    public void addObserver(Observer o) 
+    {
+        this.obs = (ActivationObserver) o;
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public ImageModel getActiveImageModel()
+    {
         return activeImageModel;
     }
 }
