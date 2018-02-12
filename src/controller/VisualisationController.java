@@ -16,6 +16,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.RadioButton;
@@ -177,9 +178,13 @@ public class VisualisationController implements Initializable,DirectoryObserver,
     
     private void startDiaporama()
     {
-        System.out.println("L'implémentation de cette fonctionnalité n'est pas"
-                + "demandée dans le sujet, elle sera ajoutée si du temps reste"
-                + "avant la fin du projet");
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Pas encore implémenté");
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+        String message = Consts.MESSAGE;
+        alert.setContentText(message);
+        alert.show();
     }
     
     /**
@@ -251,6 +256,7 @@ public class VisualisationController implements Initializable,DirectoryObserver,
                 folderPath.setText(directoryPath);
                 if (model.folderContainsImage()) {
                     galleryPane.setDisable(false);
+                    managePane.setVisible(false);
                     galleryController.update();
                 }
                 else {
@@ -290,7 +296,6 @@ public class VisualisationController implements Initializable,DirectoryObserver,
         }
         else if(o instanceof GalleryController)
         {
-            System.out.println("Ici le mainController, je passe l'image au manageController !");
             manageController.update(((GalleryController)o).getActiveImageModel());
         }
     }

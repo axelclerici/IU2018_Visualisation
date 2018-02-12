@@ -5,7 +5,10 @@
  */
 package controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
@@ -63,7 +66,11 @@ public class GalleryController implements Observable
         Runnable command = () -> 
         {
             clearGallery();
-            imageViews = getGalleryViews(model.getImages());
+            try {
+                imageViews = getGalleryViews(model.getImages());
+            } catch (IOException ex) {
+                Logger.getLogger(GalleryController.class.getName()).log(Level.SEVERE, null, ex);
+            }
             addImageViewsToGallery();
         };
         
@@ -108,7 +115,13 @@ public class GalleryController implements Observable
     {
         this.radioGroup = new ToggleGroup();
         radioGroup.selectedToggleProperty().addListener((observable, oldVal, newVal) -> 
-            setActiveImageModel(newVal));
+            {
+            try {
+                setActiveImageModel(newVal);
+            } catch (IOException ex) {
+                Logger.getLogger(GalleryController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
         int row = 0;
         int col = 0;
         for(ImageView imageView : imageViews)
@@ -126,7 +139,7 @@ public class GalleryController implements Observable
         }
     }
     
-    private void setActiveImageModel(Toggle newVal) 
+    private void setActiveImageModel(Toggle newVal) throws IOException 
     {
         int activeIndex = Integer.parseInt(((RadioButton)newVal).getId());
         activeImageModel = model.getImages().get(activeIndex);

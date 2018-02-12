@@ -12,11 +12,13 @@ import java.io.File;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import javax.activation.MimetypesFileTypeMap;
+import static model.MetaDataLoader.deleteAllWrongFiles;
 
 /**
  *
@@ -40,6 +42,7 @@ public class VisualisationModel implements Observable
     
     public VisualisationModel() throws IOException
     {
+        MetaDataLoader.deleteAllWrongFiles();
         this.interElements = new ArrayList<>();
         this.preferencesLoader = new PreferencesLoader(PREFERENCES_PATH);
         this.inter = new Internationalization(preferencesLoader);
@@ -139,8 +142,9 @@ public class VisualisationModel implements Observable
     }
     
     //todo
-    public ArrayList<ImageModel> getImages()
+    public ArrayList<ImageModel> getImages() throws IOException
     {
+        imagesLoader.loadImages();
         return imagesLoader.getImages();
     }
     
@@ -151,11 +155,22 @@ public class VisualisationModel implements Observable
     
     public void unregisterForInter(Object object)
     {
-        for(Internationalizable interElement : interElements)
+        for(Iterator<Internationalizable> iterator = interElements.iterator();
+iterator.hasNext();)
         {
+            Internationalizable interElement = iterator.next();
             if(interElement.getObject().equals(object)) {
-                removeObserver(interElement);
+                iterator.remove();
             }
         }
+    }
+
+    public void setKeyWords(ImageModel activeImageModel, String keyWords) throws IOException 
+    {
+        imagesLoader.setKeyWords(activeImageModel, keyWords);
+    }
+
+    public void setTitle(ImageModel activeImageModel, String newTitle) throws IOException {
+       imagesLoader.setTitle(activeImageModel, newTitle);
     }
 }

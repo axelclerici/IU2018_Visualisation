@@ -14,6 +14,8 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -35,6 +37,8 @@ public class ManageController
     private TitledPane managePane;
     private Button fullScreen;
     private Button cutImage;
+    private Button rotateLeft;
+    private Button rotateRight;
     private Button updateKeyWords;
     private TextArea keyWords;   
     private TextField title;
@@ -48,6 +52,8 @@ public class ManageController
     public ManageController(VisualisationController mainController)
     {
         this.model = mainController.model;
+        this.rotateLeft = mainController.rotateLeft;
+        this.rotateRight = mainController.rotateRight;
         this.managePane = mainController.managePane;
         this.fullScreen = mainController.fullScreen;
         this.cutImage = mainController.cutImage;
@@ -55,15 +61,8 @@ public class ManageController
         this.updateKeyWords = mainController.updateKeyWords;
         this.title = mainController.title;
         
-        model.registerForInter(Consts.MANAGEPANE, managePane);
-        model.registerForInter(Consts.FULLSCREEN, fullScreen);
-        model.registerForInter(Consts.CUTIMAGE, cutImage);
-        model.registerForInter(Consts.UPDATEKEYWORDS, updateKeyWords);
-        model.registerForInter(Consts.KEYWORDS, keyWords);
-        model.registerForInter(Consts.TITLE, title);
-        
-        initUpdateKeyWordsButton();
-        initTitleField();
+        registerAllForInter();
+        initAllElements();
     }
 
     protected void update(ImageModel activeImageModel) 
@@ -71,13 +70,18 @@ public class ManageController
         this.activeImageModel = activeImageModel;
         this.managePane.setVisible(true);
         title.setText(activeImageModel.getTitle());
+        setKeyWords();
     }
     
     private void initUpdateKeyWordsButton()
     {
         updateKeyWords.setOnAction((ActionEvent event) -> 
         {
-            updateKeyWords();
+            try {
+                updateKeyWords();
+            } catch (IOException ex) {
+                Logger.getLogger(ManageController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
     }
     
@@ -107,11 +111,10 @@ public class ManageController
         });
     }
     
-    private void updateKeyWords()
+    private void updateKeyWords() throws IOException
     {
         String text = keyWords.getText();
-        String[] separatedText = text.split(" ");
-        activeImageModel.setKeyWords(new ArrayList<>(Arrays.asList(separatedText)));
+        model.setKeyWords(activeImageModel, text);
     }
     
     private void updateTitle()
@@ -120,8 +123,107 @@ public class ManageController
         String newTitle = title.getText();
         if(newTitle.matches("[_a-zA-Z0-9\\-\\.]+") && oldTitle.equals(newTitle) 
                 == false && activeImageModel.isValidName(newTitle))
-            activeImageModel.setTitle(newTitle);
+            //activeImageModel.setTitle(newTitle);
+            model.setTitle(activeImageModel, newTitle);
         else
             title.setText(oldTitle);
+    }
+    
+    private void setKeyWords()
+    {
+        String modelKeyWords = activeImageModel.getKeyWords();
+        this.keyWords.setText(modelKeyWords);
+    }
+    
+    private void initRotateButtons()
+    {
+        rotateLeft.setOnAction((ActionEvent event) -> 
+        {
+            rotateLeft();
+        });
+        
+        rotateRight.setOnAction((ActionEvent event) -> 
+        {
+            rotateRight();
+        });
+    }
+    
+    private void rotateLeft()
+    {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Pas encore implémenté");
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+        String message = Consts.MESSAGE;
+        alert.setContentText(message);
+        alert.show();
+    }
+    
+    private void rotateRight()
+    {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Pas encore implémenté");
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+        String message = Consts.MESSAGE;
+        alert.setContentText(message);
+        alert.show();
+    }
+    
+    private void registerAllForInter()
+    {
+        model.registerForInter(Consts.MANAGEPANE, managePane);
+        model.registerForInter(Consts.FULLSCREEN, fullScreen);
+        model.registerForInter(Consts.CUTIMAGE, cutImage);
+        model.registerForInter(Consts.UPDATEKEYWORDS, updateKeyWords);
+        model.registerForInter(Consts.KEYWORDS, keyWords);
+        model.registerForInter(Consts.TITLE, title);
+    }
+    
+    private void initAllElements ()
+    {
+        initUpdateKeyWordsButton();
+        initTitleField();
+        initRotateButtons();
+        initCutImageButton();
+        initFullScreenButton();
+    }
+    
+    private void initCutImageButton()
+    {
+        cutImage.setOnAction((ActionEvent event) -> 
+        {
+            cutImage();
+        });
+    }
+    
+    private void cutImage()
+    {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Pas encore implémenté");
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+        String message = Consts.MESSAGE;
+        alert.setContentText(message);
+        alert.show();
+    }
+    
+    private void initFullScreenButton()
+    {
+        fullScreen.setOnAction((ActionEvent event) -> 
+        {
+            fullScreen();
+        });
+    }
+    
+    public void fullScreen()
+    {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Pas encore implémenté");
+        alert.setHeaderText(null);
+        alert.setGraphic(null);
+        String message = Consts.MESSAGE;
+        alert.setContentText(message);
+        alert.show();
     }
 }

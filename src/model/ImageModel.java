@@ -21,14 +21,14 @@ public class ImageModel
     private int id;
     private File file;
     private String title;
-    private ArrayList<String> keyWords;
+    private String keyWords;
     
     public ImageModel(File file, int id)
     {
         this.id = id;
         this.file = file;
         this.title = getTitleFromPath();
-        this.keyWords = new ArrayList<>();
+        this.keyWords = "";
     }
     
     public String getPath()
@@ -55,12 +55,12 @@ public class ImageModel
         return title;
     }
     
-    public void setKeyWords(ArrayList<String> keyWords)
+    protected void setKeyWords(String keyWords)
     {
         this.keyWords = keyWords;
     }
     
-    public void setTitle(String newTitle)
+    protected void setTitle(String newTitle)
     {
         File file2 = getNewFile(newTitle);
         file.renameTo(file2);
@@ -71,7 +71,8 @@ public class ImageModel
     
     private File getNewFile(String newTitle)
     {
-        String[] parts = file.getAbsolutePath().split("\\\\");
+        String pattern = Pattern.quote(System.getProperty("file.separator"));
+        String[] parts = file.getAbsolutePath().split(pattern);
         String name = parts[parts.length-1];
         String[] parts2 = name.split("\\.");
         parts2[0] = newTitle;
@@ -96,5 +97,10 @@ public class ImageModel
             return false;
         else
             return true;
+    }
+    
+    public String getKeyWords()
+    {
+        return this.keyWords;
     }
 }

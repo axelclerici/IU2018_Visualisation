@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.io.File;
+
 /**
  *
  * @author Poisson Blob
@@ -16,6 +18,7 @@ public final class Consts
         throw new AssertionError();
     }
     
+    public final static String MESSAGE = "L'implémentation de cette fonctionnalité n'est pas demandée dans le sujet, elle sera ajoutée si du temps reste avant la fin du projet";
     /* LangMenu */
     public final static String LANGMENULABEL = "langMenuLabel";
     
@@ -32,6 +35,8 @@ public final class Consts
     public final static String UPDATEKEYWORDS = "updateKeyWords";
     public final static String KEYWORDS = "keyWords";
     public final static String TITLE = "title";
+    public final static String METADATADIRECTORY = "src" + File.separator + 
+            "model" + File.separator + "metadata";
     
     /* Visualisation */
     public final static String DIAPORAMABUTTON = "diaporamaButton";

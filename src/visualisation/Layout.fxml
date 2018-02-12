@@ -61,7 +61,7 @@
                <children>
                   <TextField layoutX="14.0" layoutY="15.0" prefHeight="26.0" prefWidth="245.0" text="Titre" fx:id="title"/>
                   <TextArea layoutX="14.0" layoutY="48.0" prefHeight="80.0" prefWidth="491.0" promptText="Mots Clés" fx:id="keyWords"/>
-                  <Button layoutX="263.0" layoutY="14.0" mnemonicParsing="false">
+                  <Button layoutX="263.0" layoutY="14.0" mnemonicParsing="false" fx:id="rotateLeft">
                      <graphic>
                         <ImageView fitHeight="29.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -93,7 +93,7 @@
                         <Font size="12.0" />
                      </font>
                   </Button>
-                  <Button layoutX="297.0" layoutY="14.0" mnemonicParsing="false">
+                  <Button layoutX="297.0" layoutY="14.0" mnemonicParsing="false" fx:id="rotateRight">
                      <graphic>
                         <ImageView fitHeight="29.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                            <image>
