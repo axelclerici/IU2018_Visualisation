@@ -1,4 +1,4 @@
-0 Français fr FR
+1 Français fr FR
 0 English en US
-1 日本の ja JP
- 
+0 日本の ja JP
+C:\Users\Poisson Blob\Desktop

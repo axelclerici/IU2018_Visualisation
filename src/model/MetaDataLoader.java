@@ -6,7 +6,6 @@
 package model;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,12 +17,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import model.internationalization.Internationalizable;
 import visualisation.Consts;
 
 /**
@@ -129,8 +124,7 @@ public class MetaDataLoader
         String fileName = "";
         fileName += Consts.METADATADIRECTORY + File.separator;
 
-        String pattern = Pattern.quote(System.getProperty("file.separator"));
-        String transformed = directory.replaceAll(pattern, "-");
+        String transformed = directory.replaceAll(Matcher.quoteReplacement(File.separator), "-");
         transformed = transformed.replaceAll(":", "");
         fileName += transformed + ".txt";
 

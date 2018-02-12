@@ -8,8 +8,6 @@ package model;
 import visualisation.Observer;
 import controller.DirectoryObserver;
 import model.internationalization.*;
-import java.io.File;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,8 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.ObservableList;
-import javax.activation.MimetypesFileTypeMap;
-import static model.MetaDataLoader.deleteAllWrongFiles;
+import visualisation.Consts;
 
 /**
  *
@@ -30,13 +27,7 @@ public class VisualisationModel implements Observable
     private ImagesLoader imagesLoader;
     
     private PreferencesLoader preferencesLoader;
-    
-    private static final String PREFERENCES = "preferences.txt";
-    private static final String PREFERENCES_PATH = System.getProperty("user.dir")
-            + File.separator + "src" + File.separator + "model" + File.separator
-            + PREFERENCES;
-    
-    
+  
     protected List<Internationalizable> interElements;
     protected DirectoryObserver directoryObserver;
     
@@ -44,7 +35,7 @@ public class VisualisationModel implements Observable
     {
         MetaDataLoader.deleteAllWrongFiles();
         this.interElements = new ArrayList<>();
-        this.preferencesLoader = new PreferencesLoader(PREFERENCES_PATH);
+        this.preferencesLoader = new PreferencesLoader(Consts.PREFERENCES_PATH);
         this.inter = new Internationalization(preferencesLoader);
         this.imagesLoader = new ImagesLoader(preferencesLoader);
     }
@@ -141,7 +132,6 @@ public class VisualisationModel implements Observable
         return imagesLoader.folderContainsImage();
     }
     
-    //todo
     public ArrayList<ImageModel> getImages() throws IOException
     {
         imagesLoader.loadImages();
@@ -156,7 +146,7 @@ public class VisualisationModel implements Observable
     public void unregisterForInter(Object object)
     {
         for(Iterator<Internationalizable> iterator = interElements.iterator();
-iterator.hasNext();)
+                iterator.hasNext();)
         {
             Internationalizable interElement = iterator.next();
             if(interElement.getObject().equals(object)) {

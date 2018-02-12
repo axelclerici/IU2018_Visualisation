@@ -22,7 +22,7 @@ public class Visualisation extends Application {
     {
         Parent root = FXMLLoader.load(getClass().getResource("Layout.fxml"));
         Scene scene = new Scene(root);
-        stage.setTitle("Visualisateur d'Images");
+        stage.setTitle("Visionneur d'Images");
         stage.setScene(scene);
         stage.show();
     }

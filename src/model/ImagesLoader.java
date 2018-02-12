@@ -56,7 +56,6 @@ public class ImagesLoader
             }
             else {
                 try {
-                    //MetaDataLoader.deleteWrongFolder(lastDirectory);
                     updateDirectoryPath(" ");
                 } catch (IOException ex) {
                     Logger.getLogger(ImagesLoader.class.getName()).log(Level.SEVERE, null, ex);

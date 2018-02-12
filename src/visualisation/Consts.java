@@ -41,4 +41,10 @@ public final class Consts
     /* Visualisation */
     public final static String DIAPORAMABUTTON = "diaporamaButton";
     public final static String DIRECTORYPATH = "directoryPath";
+    
+    /*Model*/
+    public final static String PREFERENCES = "preferences.txt";
+    public final static String PREFERENCES_PATH = System.getProperty("user.dir")
+            + File.separator + "src" + File.separator + "model" + File.separator
+            + PREFERENCES;
 }
