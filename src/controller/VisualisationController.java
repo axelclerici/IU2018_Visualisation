@@ -28,7 +28,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
-import model.Consts;
+import visualisation.Consts;
 import model.Observable;
 
 
@@ -257,7 +257,11 @@ public class VisualisationController implements Initializable,DirectoryObserver,
                 if (model.folderContainsImage()) {
                     galleryPane.setDisable(false);
                     managePane.setVisible(false);
-                    galleryController.update();
+                    try {
+                        galleryController.update(model.getImages());
+                    } catch (IOException ex) {
+                        Logger.getLogger(VisualisationController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 else {
                     galleryController.clearGallery();

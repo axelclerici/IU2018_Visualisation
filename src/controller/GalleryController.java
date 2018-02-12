@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -19,8 +20,8 @@ import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import model.Consts;
-import model.ImageModel;
+import visualisation.Consts;
+import model.image.ImageModel;
 import model.Observable;
 import model.VisualisationModel;
 import visualisation.Observer;
@@ -33,6 +34,7 @@ public class GalleryController implements Observable
 {
     private VisualisationModel model;
     private TitledPane galleryPane;
+    private TitledPane managePane;
     private TextField searchBar;
     private Button searchBarButton;
     private GridPane gridPane;
@@ -49,6 +51,7 @@ public class GalleryController implements Observable
     public GalleryController(VisualisationController mainController)
     {
         this.model = mainController.getModel();
+        this.managePane = mainController.managePane;
         this.galleryPane = mainController.galleryPane;
         this.searchBar = mainController.searchBar;
         this.searchBarButton = mainController.searchBarButton;
@@ -56,21 +59,19 @@ public class GalleryController implements Observable
         
         model.registerForInter(Consts.GALLERYPANE, galleryPane);
         model.registerForInter(Consts.SEARCHBAR, searchBar);
+        
+        initSearchBarButton();
     }
     
     /**
      *
      */
-    protected void update()
+    protected void update(ArrayList<ImageModel> images)
     {
         Runnable command = () -> 
         {
             clearGallery();
-            try {
-                imageViews = getGalleryViews(model.getImages());
-            } catch (IOException ex) {
-                Logger.getLogger(GalleryController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            imageViews = getGalleryViews(images);
             addImageViewsToGallery();
         };
         
@@ -115,12 +116,16 @@ public class GalleryController implements Observable
     {
         this.radioGroup = new ToggleGroup();
         radioGroup.selectedToggleProperty().addListener((observable, oldVal, newVal) -> 
-            {
-            try {
-                setActiveImageModel(newVal);
-            } catch (IOException ex) {
-                Logger.getLogger(GalleryController.class.getName()).log(Level.SEVERE, null, ex);
+        {
+            if(newVal != null) {
+                try {
+                    setActiveImageModel(newVal);
+                } catch (IOException ex) {
+                    Logger.getLogger(GalleryController.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            else
+                managePane.setVisible(false);
         });
         int row = 0;
         int col = 0;
@@ -183,5 +188,34 @@ public class GalleryController implements Observable
     public ImageModel getActiveImageModel()
     {
         return activeImageModel;
+    }
+    
+    private void initSearchBarButton()
+    {
+        searchBarButton.setOnAction((ActionEvent event) -> 
+        {
+            try {
+                search(searchBar.getText());
+            } catch (IOException ex) {
+                Logger.getLogger(GalleryController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        });
+    }
+    
+    private void search(String text) throws IOException
+    {
+        ArrayList<ImageModel> results = new ArrayList<>();
+        if(text.equals("")) 
+            results = model.getImages();
+        else
+        {
+            for(ImageModel image : model.getImages())
+            {
+                if (image.getKeyWords().contains(text))
+                    results.add(image);
+            }
+        }
+        radioGroup.selectToggle(null);
+        update(results);
     }
 }

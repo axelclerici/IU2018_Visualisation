@@ -22,8 +22,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import model.Consts;
-import model.ImageModel;
+import visualisation.Consts;
+import model.image.ImageModel;
 import model.VisualisationModel;
 
 /**
@@ -94,7 +94,11 @@ public class ManageController
             {
                 if(oldPropertyValue)
                 {
-                    updateTitle();
+                    try {
+                        updateTitle();
+                    } catch (IOException ex) {
+                        Logger.getLogger(ManageController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         });
@@ -105,7 +109,11 @@ public class ManageController
             public void handle(KeyEvent event) 
             {
                 if(event.getCode().equals(KeyCode.ENTER)) {
-                    updateTitle();
+                    try {
+                        updateTitle();
+                    } catch (IOException ex) {
+                        Logger.getLogger(ManageController.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         });
@@ -117,7 +125,7 @@ public class ManageController
         model.setKeyWords(activeImageModel, text);
     }
     
-    private void updateTitle()
+    private void updateTitle() throws IOException
     {
         String oldTitle = activeImageModel.getTitle();
         String newTitle = title.getText();

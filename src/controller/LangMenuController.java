@@ -10,7 +10,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.text.Text;
-import model.Consts;
+import visualisation.Consts;
 import model.VisualisationModel;
 
 /**
