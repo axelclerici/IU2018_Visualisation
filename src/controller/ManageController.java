@@ -23,7 +23,7 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import visualisation.Consts;
-import model.image.ImageModel;
+import model.ImageModel;
 import model.VisualisationModel;
 
 /**

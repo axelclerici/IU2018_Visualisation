@@ -21,7 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import visualisation.Consts;
-import model.image.ImageModel;
+import model.ImageModel;
 import model.Observable;
 import model.VisualisationModel;
 import visualisation.Observer;
