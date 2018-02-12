@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model.internationalization;
 
 import model.Observable;
@@ -17,16 +12,6 @@ import javafx.scene.text.Text;
 import model.VisualisationModel;
 import visualisation.Consts;
 
-/**
- *
- * @author Poisson Blob
- */
-
-// Wrap all GUI elements with text susceptible to be modifies if language changes in
-// Internationalizable object, then bind them to the model in the LangMenuController
-// setObservers() method.
-// Just a reminder that "string" has to be registered in the different 
-//StringsBundle properties file.
 public class Internationalizable implements LangObserver
 {
     private String string;

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import javafx.application.Platform;
@@ -13,20 +8,13 @@ import javafx.scene.text.Text;
 import visualisation.Consts;
 import model.VisualisationModel;
 
-/**
- *
- * @author Poisson Blob
- */
+
 public class LangMenuController
 {
     private VisualisationModel model;
     private ChoiceBox langMenu;
     private Text langMenuLabel;
     
-    /**
-     *
-     * @param mainController
-     */
     protected LangMenuController(VisualisationController mainController)
     {     
         this.model = mainController.getModel();
@@ -51,20 +39,14 @@ public class LangMenuController
         
         if (Platform.isFxApplicationThread()) 
         {
-        // Nous sommes déjà dans le thread graphique
          command.run();
         } 
         else 
         {
-        // Nous ne sommes pas dans le thread graphique
-        // on utilise runLater.
         Platform.runLater(command);
         }
     }
     
-    /**
-     *
-     */
     public void addListener()
     {
         langMenu.getSelectionModel().selectedIndexProperty().addListener(

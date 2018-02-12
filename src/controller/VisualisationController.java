@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.File;
@@ -148,8 +143,6 @@ public class VisualisationController implements Initializable,DirectoryObserver,
     //Met à jour le chemin indiqué par l'utilisateur. Si le chemin est bon,
     //et que le dossier contient des images, alors le galleryPane est activé 
     // et mis à jour.
-    // Toutes les fonctions mettant à jour l'interface sont de cette forme, avec
-    // runnable.
     private void updateDirectoryPath(String directoryPath) throws IOException
     {
         Runnable command = () -> {

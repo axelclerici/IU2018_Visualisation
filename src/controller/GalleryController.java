@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package controller;
 
 import java.io.IOException;
@@ -26,10 +21,6 @@ import model.Observable;
 import model.VisualisationModel;
 import visualisation.Observer;
 
-/**
- *
- * @author Poisson Blob
- */
 public class GalleryController implements Observable
 {
     private VisualisationModel model;
@@ -85,9 +76,6 @@ public class GalleryController implements Observable
         }
     }
     
-    /**
-     *
-     */
     protected void clearGallery()
     {
         gridPane.getChildren().clear();

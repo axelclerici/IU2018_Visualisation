@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model.internationalization;
 
 import java.io.FileNotFoundException;
@@ -13,10 +8,6 @@ import java.util.ResourceBundle;
 import javafx.collections.ObservableList;
 import model.PreferencesLoader;
 
-/**
- *
- * @author Poisson Blob
- */
 public class Internationalization 
 {
     protected String langLabel;

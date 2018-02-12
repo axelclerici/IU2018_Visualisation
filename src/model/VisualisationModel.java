@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package model;
 
 import visualisation.Observer;
@@ -17,10 +12,6 @@ import java.util.logging.Logger;
 import javafx.collections.ObservableList;
 import visualisation.Consts;
 
-/**
- *
- * @author Poisson Blob
- */
 public class VisualisationModel implements Observable
 {
     private Internationalization inter;
