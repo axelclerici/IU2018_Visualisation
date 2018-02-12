@@ -15,6 +15,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.text.Text;
 import model.VisualisationModel;
+import visualisation.Consts;
 
 /**
  *
@@ -55,8 +56,12 @@ public class Internationalizable implements LangObserver
         }
         else if (object instanceof Text)
             ((Text)object).setText(((VisualisationModel) o).getString(string));
-        else if (object instanceof TextField)
-            ((TextField)object).setText(((VisualisationModel) o).getString(string));
+        else if (object instanceof TextField) {
+            if(string.equals(Consts.TITLE) || string.equals(Consts.DIRECTORYPATH))
+                ((TextField)object).setText(((VisualisationModel) o).getString(string));
+            else
+                ((TextField)object).setPromptText(((VisualisationModel) o).getString(string));
+        }
         else if (object instanceof TitledPane)
             ((TitledPane)object).setText(((VisualisationModel) o).getString(string));
         else
